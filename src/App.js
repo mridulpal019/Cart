@@ -69,12 +69,21 @@ componentDidMount(){
 handleIncreaseQuantity=(product)=>{
    const {products}=this.state
    const index =products.indexOf(product);
-   products[index].qty +=1;
 
-   this.setState({
-    //as both have same name we can omit writing one
-    products
-   })
+  const docRef=this.db.collection('products').doc(products[index].id);
+ 
+  docRef
+  .update({
+    qty:products[index].qty +1
+  })
+  .then(()=>{
+    console.log('Updated',)
+  })
+  .catch((err)=>{
+    console.log('err',err);
+
+  })
+
 }
 handleDecreaseQuantity=(product)=>{
     const {products}=this.state
@@ -82,11 +91,18 @@ handleDecreaseQuantity=(product)=>{
     if(products[index].qty <1){
         return
     }
-    products[index].qty -=1;
-
-    this.setState({
-     //as both have same name we can omit writing one
-     products
+    const docRef=this.db.collection('products').doc(products[index].id);
+ 
+    docRef
+    .update({
+      qty:products[index].qty -1
+    })
+    .then(()=>{
+      console.log('Reduced',)
+    })
+    .catch((err)=>{
+      console.log('err',err);
+  
     })
  }
 
@@ -136,7 +152,7 @@ getCartTotal=()=>{
   return (
     <div className="App">
       <Navbar count={this.getCartCount()} />
-      <button onClick={this.addProduct} style={{padding:20,fontSize:20}}>Add a Product</button>
+      {/* <button onClick={this.addProduct} style={{padding:20,fontSize:20}}>Add a Product</button> */}
       <Cart  
       products={products}
       onIncreaseQuantity={this.handleIncreaseQuantity} 
