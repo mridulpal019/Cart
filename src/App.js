@@ -45,6 +45,8 @@ componentDidMount(){
 
     this.db
     .collection('products')
+    // .where('price','==',999) for multiple finding use .where again
+    // .orderBy() it will help in sorting 
     .onSnapshot((snapshot)=>{ //on every chnge it will fetch again
       // console.log(snapshot);
 
